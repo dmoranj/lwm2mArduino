@@ -18,6 +18,11 @@ function handleWrite(objectType, objectId, resourceId, value, callback) {
     console.log('-> ResourceId: %s', resourceId);
     console.log('-> Written value: %s', value);
 
+    if (value == 0) {
+        (new five.Led(resourceId)).off();
+    } else {
+        (new five.Led(resourceId)).on();
+    }
     callback(null);
 }
 
