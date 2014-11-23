@@ -1,0 +1,17 @@
+{
+  "name": "lwm2m-arduino",
+  "version": "0.1.0",
+  "description": "Lightweight M2M Binding for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+ "dependencies": {
+    "johnny-five": "*",
+    "firmata": "0.3.1",
+    "async": "*",
+    "iotagent-lwm2m-lib": "https://github.com/telefonicaid/iotagent-lwm2m-lib/tarball/71b7bfceefc410f9aae471a0107c9eb188b2111e"
+  },
+  "author": "",
+  "license": "AGPL"
+}
