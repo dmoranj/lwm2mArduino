@@ -2,7 +2,8 @@ var config = {};
 
 config.server = {
     host: 'localhost',
-    port: 60001
+    port: 60001,
+    path: '/'
 }
 
 config.client = {

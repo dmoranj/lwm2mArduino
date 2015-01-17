@@ -7,8 +7,10 @@ var five = require("johnny-five"),
     board = new five.Board(),
     mapping = {
         objectType: 5,
-        objectInstance: 1
-    };
+        analogInstance: 1,
+        digitalInstance: 2
+    },
+    analogSensors = [];
 
 
 function handleWrite(objectType, objectId, resourceId, value, callback) {
@@ -43,7 +45,7 @@ function setHandlers(deviceInfo) {
 
 function connect(config, callback) {
     console.log('Trying to connect to Lightweight M2M Server');
-    lwm2mClient.register(config.server.host, config.server.port, config.client.endpoint, function (error, deviceInfo) {
+    lwm2mClient.register(config.server.host, config.server.port, config.server.path, config.client.endpoint, function (error, deviceInfo) {
         if (error) {
             console.log('Failed to connect');
             callback(error);
@@ -55,16 +57,45 @@ function connect(config, callback) {
     });
 }
 
+function createDataHandler(analogUri, i) {
+    console.log('Creating handler for analog sensor on Object [%s] resource[%d]', analogUri, i);
+
+    return function() {
+        lwm2mClient.registry.setResource(analogUri, i, this.value, function (error) {
+            if (error) {
+                console.log('Error writting resource %s/%s: ', analogUri, i, error);
+            }
+        });
+    };
+}
+
 board.on('ready', function() {
-    var objUri = '/' + mapping.objectType + '/' + mapping.objectInstance,
+    var analogUri = '/' + mapping.objectType + '/' + mapping.analogInstance,
+        digitalUri = '/' + mapping.objectType + '/' + mapping.digitalInstance,
         connectionFlow = [
-            apply(connect, config),
-            apply(lwm2mClient.registry.create, objUri)
+            apply(lwm2mClient.registry.create, digitalUri),
+            apply(lwm2mClient.registry.create, analogUri),
         ];
 
     for (var i = 0; i < 13; i++) {
-        connectionFlow.push(apply(lwm2mClient.registry.setAttribute, objUri, i, 0));
+        console.log('Creating handler for digital entries on Object [%s] resource[%d]', analogUri, i);
+
+        connectionFlow.push(apply(lwm2mClient.registry.setResource, digitalUri, i, 9));
     }
+
+    for (var i = 0; i < 6; i++) {
+        var sensor = new five.Sensor({
+            pin: "A" + i,
+            freq: 250
+        });
+
+        connectionFlow.push(apply(lwm2mClient.registry.setResource, analogUri, i, 9));
+
+        analogSensors.push(sensor);
+        sensor.on('data', createDataHandler(analogUri, i));
+    }
+
+    connectionFlow.push(apply(connect, config));
 
     async.series(connectionFlow, function (error) {
         if (error) {
