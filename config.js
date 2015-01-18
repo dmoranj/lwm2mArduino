@@ -3,7 +3,7 @@ var config = {};
 config.server = {
     host: 'localhost',
     port: 60001,
-    path: '/'
+    path: '/arduino'
 }
 
 config.client = {

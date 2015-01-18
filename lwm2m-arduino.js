@@ -6,7 +6,7 @@ var five = require("johnny-five"),
     globalDeviceInfo,
     board = new five.Board(),
     mapping = {
-        objectType: 5,
+        objectType: 5001,
         analogInstance: 1,
         digitalInstance: 2
     },
