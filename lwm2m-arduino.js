@@ -5,11 +5,6 @@ var five = require("johnny-five"),
     config = require('./config'),
     globalDeviceInfo,
     board = new five.Board(),
-    mapping = {
-        objectType: 5001,
-        analogInstance: 1,
-        digitalInstance: 2
-    },
     analogSensors = [];
 
 
@@ -70,8 +65,8 @@ function createDataHandler(analogUri, i) {
 }
 
 board.on('ready', function() {
-    var analogUri = '/' + mapping.objectType + '/' + mapping.analogInstance,
-        digitalUri = '/' + mapping.objectType + '/' + mapping.digitalInstance,
+    var analogUri = '/' + config.mapping.objectType + '/' + config.mapping.analogInstance,
+        digitalUri = '/' + config.mapping.objectType + '/' + config.mapping.digitalInstance,
         connectionFlow = [
             apply(lwm2mClient.registry.create, digitalUri),
             apply(lwm2mClient.registry.create, analogUri),
@@ -86,7 +81,7 @@ board.on('ready', function() {
     for (var i = 0; i < 6; i++) {
         var sensor = new five.Sensor({
             pin: "A" + i,
-            freq: 250
+            freq: config.data.frequency
         });
 
         connectionFlow.push(apply(lwm2mClient.registry.setResource, analogUri, i, 9));
