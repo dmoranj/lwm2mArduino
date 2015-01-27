@@ -52,11 +52,13 @@ function connect(config, callback) {
     });
 }
 
-function createDataHandler(analogUri, i) {
+function createDataHandler(analogUri, i, transform) {
     console.log('Creating handler for analog sensor on Object [%s] resource[%d]', analogUri, i);
 
     return function() {
-        lwm2mClient.registry.setResource(analogUri, i, this.value, function (error) {
+        var value = (transform)?eval(transform.replace('VALUE', this.value)):this.value;
+
+        lwm2mClient.registry.setResource(analogUri, i, value, function (error) {
             if (error) {
                 console.log('Error writting resource %s/%s: ', analogUri, i, error);
             }
@@ -72,13 +74,13 @@ board.on('ready', function() {
             apply(lwm2mClient.registry.create, analogUri),
         ];
 
-    for (var i = 0; i < 13; i++) {
+    function prepareDigital(i) {
         console.log('Creating handler for digital entries on Object [%s] resource[%d]', analogUri, i);
 
-        connectionFlow.push(apply(lwm2mClient.registry.setResource, digitalUri, i, 9));
+        connectionFlow.push(apply(lwm2mClient.registry.setResource, digitalUri, i, 1));
     }
 
-    for (var i = 0; i < 6; i++) {
+    function prepareAnalog(i, transform) {
         var sensor = new five.Sensor({
             pin: "A" + i,
             freq: config.data.frequency
@@ -87,7 +89,46 @@ board.on('ready', function() {
         connectionFlow.push(apply(lwm2mClient.registry.setResource, analogUri, i, 9));
 
         analogSensors.push(sensor);
-        sensor.on('data', createDataHandler(analogUri, i));
+        sensor.on('data', createDataHandler(analogUri, i, transform));
+    }
+
+    function prepareMotion(i) {
+        var motion = new five.IR.Motion(i);
+
+        connectionFlow.push(apply(lwm2mClient.registry.setResource, digitalUri, i, 9));
+
+        motion.on("calibrated", function(err, ts) {
+            motion.on("motionstart", function(err, ts) {
+                lwm2mClient.registry.setResource(digitalUri, i, 'MOVING', function (error) {
+                    if (error) {
+                        console.log('Error writting motion value %s/%s: ', analogUri, i, error);
+                    }
+                });
+            });
+
+            motion.on("motionend", function(err, ts) {
+                lwm2mClient.registry.setResource(digitalUri, i, 'STILL', function (error) {
+                    if (error) {
+                        console.log('Error writting motion value %s/%s: ', analogUri, i, error);
+                    }
+                });
+            });
+        });
+    }
+
+    for (var i = 0; i < config.data.pinMap.length; i++) {
+        var pinObj = config.data.pinMap[i];
+        switch(pinObj.type) {
+            case 'analogSensor':
+                prepareAnalog(pinObj.id, pinObj.transform);
+                break;
+            case 'digitalInput':
+                prepareDigital(pinObj.id);
+                break
+            case 'motion':
+                prepareMotion(pinObj.id);
+                break;
+        }
     }
 
     connectionFlow.push(apply(connect, config));

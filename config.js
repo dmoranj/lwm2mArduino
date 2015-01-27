@@ -23,7 +23,22 @@ config.mapping = {
 };
 
 config.data = {
-    frequency: 3000
+    frequency: 1000,
+    pinMap: [
+        {
+            id: 0,
+            type: 'analogSensor'
+        },
+        {
+            id: 1,
+            type: 'analogSensor',
+            transform: '(VALUE * 0.004882814 - 0.5) * 100'
+        },
+        {
+            id: 4,
+            type: 'motion'
+        }
+    ]
 };
 
 module.exports = config;
