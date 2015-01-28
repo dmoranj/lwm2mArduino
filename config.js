@@ -1,7 +1,7 @@
 var config = {};
 
 config.server = {
-    host: 'localhost',
+    host: 'orionlive.fiware.org',
     port: 60001,
     path: '/arduino'
 };
