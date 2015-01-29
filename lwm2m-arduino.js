@@ -4,7 +4,9 @@ var five = require("johnny-five"),
     apply = async.apply,
     config = require('./config'),
     globalDeviceInfo,
-    board = new five.Board(),
+    board = new five.Board({
+        repl: false
+    }),
     analogSensors = [];
 
 
