@@ -9,6 +9,7 @@
  "dependencies": {
     "johnny-five": "*",
     "firmata": "0.3.1",
+    "logops": "*",
     "async": "*",
     "iotagent-lwm2m-lib": "https://github.com/telefonicaid/iotagent-lwm2m-lib/tarball/develop"
   },
