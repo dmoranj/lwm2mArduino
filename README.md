@@ -37,34 +37,35 @@ and, from the root of the project, download its dependencies:
 npm install
 ```
 ## Configuration
+All the configuration information can be found in the `config.js` file in the project root.
 
 ### Server configuration
 Connection data to the Lightweight M2M Server:
-* config.server.host: hostname of the server.
-* config.server.port: UDP port where the server is listening for new registrations.
-* config.server.path: registration path ('/' for the standard path).
+* `config.server.host`: hostname of the server.
+* `config.server.port`: UDP port where the server is listening for new registrations.
+* `config.server.path`: registration path ('/' for the standard path).
 
 ### Client configuration
 Client configuration values:
-* config.client.endpoint: endpoint name for the client.
-* config.client.port: UDP port where the client will be listening for connections initiated by the server.
-* config.client.lifetime: expected lifetime for the registration.
-* config.client.version: Lightweight M2M Version to declare to the server.
-* config.client.observe.period: frequency of updates sent to the server for every observed value.
+* `config.client.endpoint`: endpoint name for the client.
+* `config.client.port`: UDP port where the client will be listening for connections initiated by the server.
+* `config.client.lifetime`: expected lifetime for the registration.
+* `config.client.version`: Lightweight M2M Version to declare to the server.
+* `config.client.observe.period`: frequency of updates sent to the server for every observed value.
 
 ### Mapping configuration
 Configures how the Arduino PINs are mapped to Lightweight M2M Object URIs:
-* config.mapping.objectType: Object ID for the Arduino Board.
-* config.mapping.analogInstance: Instance ID for Arduino analog Inputs.
-* config.mapping.digitalInstance: Instance ID for Arduino digital Inputs.
+* `config.mapping.objectType`: Object ID for the Arduino Board.
+* `config.mapping.analogInstance`: Instance ID for Arduino analog Inputs.
+* `config.mapping.digitalInstance`: Instance ID for Arduino digital Inputs.
 
 ### Data Configuration
 The following data-related values can be configured:
-* config.data.frequency: polling frequency for the Arduino data. 
-* config.data.mapping: list of pins used along with its type and possible transformation:
-  * id: integer ID of the configured pin (mandatory).
-  * type: type of pin; currently supported values are `analogSensor`, `digitalInput` and `motion` (mandatory).
-  * transform: JavaScript expression that will be applied to the raw value of the pin before sending it (optional).
+* `config.data.frequency`: polling frequency for the Arduino data. 
+* `config.data.mapping`: list of pins used along with its type and possible transformation:
+  * `id`: integer ID of the configured pin (mandatory).
+  * `type`: type of pin; currently supported values are `analogSensor`, `digitalInput` and `motion` (mandatory).
+  * `transform`: JavaScript expression that will be applied to the raw value of the pin before sending it (optional).
 
 ## Usage
 In order to use the the LWM2 Arduino Client, from the project root, execute:
