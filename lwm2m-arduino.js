@@ -126,7 +126,7 @@ board.on('ready', function() {
                 break;
             case 'digitalInput':
                 prepareDigital(pinObj.id);
-                break
+                break;
             case 'motion':
                 prepareMotion(pinObj.id);
                 break;
