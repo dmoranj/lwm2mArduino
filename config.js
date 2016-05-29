@@ -1,9 +1,9 @@
 var config = {};
 
 config.server = {
-    host: 'orionlive.fiware.org',
-    port: 60001,
-    path: '/arduino'
+    host: 'leshan.eclipse.org',
+    port: 5683,
+    path: '/'
 };
 
 config.client = {
