@@ -1,5 +1,5 @@
 var five = require("johnny-five"),
-    lwm2mClient = require('iotagent-lwm2m-lib').client,
+    lwm2mClient = require('lwm2m-node-lib').client,
     async = require('async'),
     apply = async.apply,
     config = require('./config'),
@@ -69,6 +69,8 @@ function createDataHandler(analogUri, i, transform) {
 }
 
 board.on('ready', function() {
+    lwm2mClient.init(config);
+    
     var analogUri = '/' + config.mapping.objectType + '/' + config.mapping.analogInstance,
         digitalUri = '/' + config.mapping.objectType + '/' + config.mapping.digitalInstance,
         connectionFlow = [
