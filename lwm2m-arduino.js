@@ -62,7 +62,7 @@ function createDataHandler(analogUri, i, transform) {
 
         lwm2mClient.registry.setResource(analogUri, i, value, function (error) {
             if (error) {
-                console.log('Error writting resource %s/%s: ', analogUri, i, error);
+                console.log('Error writing resource %s/%s: ', analogUri, i, error);
             }
         });
     };
@@ -105,7 +105,7 @@ board.on('ready', function() {
             motion.on("motionstart", function(err, ts) {
                 lwm2mClient.registry.setResource(digitalUri, i, 'MOVING', function (error) {
                     if (error) {
-                        console.log('Error writting motion value %s/%s: ', analogUri, i, error);
+                        console.log('Error writing motion value %s/%s: ', analogUri, i, error);
                     }
                 });
             });
@@ -113,7 +113,7 @@ board.on('ready', function() {
             motion.on("motionend", function(err, ts) {
                 lwm2mClient.registry.setResource(digitalUri, i, 'STILL', function (error) {
                     if (error) {
-                        console.log('Error writting motion value %s/%s: ', analogUri, i, error);
+                        console.log('Error writing motion value %s/%s: ', analogUri, i, error);
                     }
                 });
             });
