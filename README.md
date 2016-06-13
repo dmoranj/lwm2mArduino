@@ -8,7 +8,7 @@ designed for [FIWARE's](http://www.fiware.org/) IoT Agents.
 Whoever wants to use the library has to take some considerations into account:
 * The library makes use of a LWM2M in its early stage that does not provide security (DTLS).
 * This LWM2M client does not implement some of the standard OMA Objects yet.
-* The objects are exposed with Object URI's selected by the user, making no check against the OMA Registry for their existance and
+* The objects are exposed with Object URI's selected by the user, making no check against the OMA Registry for their existence and
 semantic validity.
 
 This client has only been tested against the LWM2M server provided by the [Lightweight M2M Node.js library](https://github.com/telefonicaid/iotagent-lwm2m-lib)
